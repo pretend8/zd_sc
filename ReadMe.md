@@ -32,7 +32,7 @@ npm i koa
 
 ## 2 编写最基本的app
 
-编写 `src\main.js`
+编写 `src/main.js`
 
 ```javascript
 const Koa = require("koa");
@@ -61,7 +61,7 @@ app.listen(3000, () => {
 安装nodemon工具
 
 ```js
-npm i nodemon	
+npm i nodemon	-D
 ```
 
 编写package.json脚本
@@ -229,7 +229,7 @@ router.post("/login", login);
 module.exports = router;
 ```
 
-创建`controller\user.controller.js`
+创建`controller/user.controller.js`
 
 ```js
 class UserController {
@@ -237,10 +237,82 @@ class UserController {
     ctx.body = "用户注册成功";
   }
   async login(ctx, next) {
+    ctx.body = "登录成功";
+  }
+}
+
+module.exports = new UserController();
+```
+
+# 六. 解析body
+
+## 1. 安装koa-body
+
+```js
+npm i koa-body
+```
+
+## 2. 注册中间件
+
+改写`src/app/index.js`
+
+```js
+const Koa = require("koa");
+
+const koaBody = require("koa-body");
+
+const app = new Koa();
+
+const userRouter = require("../router/user.route");
+
+app.use(koaBody()); // 一定要在注册之前
+
+app.use(userRouter.routes());
+
+module.exports = app;
+```
+
+## 3. 解析请求数据
+
+改写`user.controller.js`
+
+```js
+const { createUser } = require("../service/user.service");
+
+class UserController {
+  // controller 叫注册 在service 里面叫做create
+  async register(ctx, next) {
+    // 1. 获取数据
+    // console.log(ctx.request.body);
+    const { user_name, password } = ctx.request.body;
+    // 2. 操作数据库
+    const res = await createUser(user_name, password);
+    console.log(res);
+    // 3. 返回数据
+    ctx.body = res;
+  }
+  async login(ctx, next) {
     ctx.body = "注册成功";
   }
 }
 
 module.exports = new UserController();
+```
+
+## 4. 拆分service层
+
+service层主要是做数据库处理
+
+创建`src/service/user.service.js`
+
+```js
+class UserService {
+  async createUser(user_name, password) {
+    // todo: 写入数据库
+    return "写入数据库成功";
+  }
+}
+
+module.exports = new UserService();
 ```
 
