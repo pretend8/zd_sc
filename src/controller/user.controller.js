@@ -1,6 +1,10 @@
-const { createUser } = require("../service/user.service");
+const jwt = require("jsonwebtoken");
+
+const { createUser, getUserInfo } = require("../service/user.service");
 
 const { userRegisterError } = require("../constant/err.type");
+
+const { JWT_SECRET } = require("../config/config.default");
 
 class UserController {
   // controller 叫注册 在service 里面叫做create
@@ -28,11 +32,20 @@ class UserController {
     }
   }
   async login(ctx, next) {
-    ctx.body = {
-      code: 0,
-      message: "用户登录成功",
-      result: "",
-    };
+    const { user_name } = ctx.request.body;
+    // 1.获取用户信息 (在token的payload中记录id，user_name ，is_admin)
+    try {
+      const { password, ...res } = await getUserInfo({ user_name });
+      ctx.body = {
+        code: 0,
+        message: "用户登录成功",
+        result: {
+          token: jwt.sign(res, JWT_SECRET, { expiresIn: "1d" }), // 过期时间1天
+        },
+      };
+    } catch (err) {
+      console.log("用户登录失败：", err);
+    }
   }
 }
 
