@@ -6,6 +6,7 @@ const {
   userValidator,
   verifyUser,
   cryptPassword,
+  verifyLogin,
 } = require("../middleware/user.middleware");
 
 //  实例话对象
@@ -19,6 +20,6 @@ router.get("/", (ctx, next) => {
 router.post("/register", userValidator, verifyUser, cryptPassword, register);
 
 // 登录接口
-router.post("/login", login);
+router.post("/login", userValidator, verifyLogin, login);
 
 module.exports = router;

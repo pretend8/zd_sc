@@ -6,6 +6,9 @@ const {
   userFormateError,
   userAlreadyExited,
   userRegisterError,
+  userDoesNotExist,
+  userLoginError,
+  invalidPassword,
 } = require("../constant/err.type");
 const { get } = require("../router/user.route");
 
@@ -49,4 +52,26 @@ const cryptPassword = async (ctx, next) => {
   await next();
 };
 
-module.exports = { userValidator, verifyUser, cryptPassword };
+// 校验登录中间件
+const verifyLogin = async (ctx, next) => {
+  // 1 判断用户名是否存在
+  const { user_name, password } = ctx.request.body;
+
+  try {
+    const res = await getUserInfo({ user_name });
+    if (!res) {
+      return ctx.app.emit("error", userDoesNotExist, ctx);
+    }
+    // 2 密码是否匹配
+    if (!bcrypt.compareSync(password, res.password)) {
+      return ctx.app.emit("error", invalidPassword, ctx);
+    }
+  } catch (err) {
+    console.log("用户登录失败：", err);
+    return ctx.app.emit("error", userLoginError, ctx);
+  }
+
+  await next();
+};
+
+module.exports = { userValidator, verifyUser, cryptPassword, verifyLogin };

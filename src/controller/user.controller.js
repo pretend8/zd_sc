@@ -28,7 +28,11 @@ class UserController {
     }
   }
   async login(ctx, next) {
-    ctx.body = "登录成功";
+    ctx.body = {
+      code: 0,
+      message: "用户登录成功",
+      result: "",
+    };
   }
 }
 
