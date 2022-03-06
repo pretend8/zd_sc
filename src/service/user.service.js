@@ -11,7 +11,7 @@ class UserService {
       password,
     });
 
-    console.log(res, "UserService");
+    // console.log(res, "UserService");
     return res.dataValues;
   }
 

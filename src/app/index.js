@@ -4,9 +4,9 @@ const koaBody = require("koa-body");
 
 const errorHandle = require("./error.handle");
 
-const app = new Koa();
-
 const userRouter = require("../router/user.route");
+
+const app = new Koa();
 
 app.use(koaBody()); // 一定要在注册之前
 

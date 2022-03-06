@@ -8,8 +8,8 @@ class UserController {
     // 1. 获取数据
     // console.log(ctx.request.body);
     const { user_name, password } = ctx.request.body;
-    // 2. 操作数据库
 
+    // 2. 操作数据库
     try {
       const res = await createUser(user_name, password);
       // console.log(res, "UserController");
