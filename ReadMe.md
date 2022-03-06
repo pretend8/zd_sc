@@ -425,3 +425,113 @@ const User = seq.define(
 module.exports = User;
 ```
 
+# 九. 添加用户入库
+
+改写`user.service.js`
+
+```js
+const User = require("../model/user.model");
+
+class UserService {
+  async createUser(user_name, password) {
+    // User create方法 https://www.sequelize.com.cn/core-concepts/model-querying-basics
+    const res = await User.create({
+      // 表的字段&值
+      user_name,
+      password,
+    });
+
+    console.log(res, "UserService");
+    return res.dataValues;
+  }
+}
+
+module.exports = new UserService();
+```
+
+改写`user.controller.js`
+
+```js
+const { createUser } = require("../service/user.service");
+
+class UserController {
+  // controller 叫注册 在service 里面叫做create
+  async register(ctx, next) {
+    // 1. 获取数据
+    // console.log(ctx.request.body);
+    const { user_name, password } = ctx.request.body;
+    // 2. 操作数据库
+    const res = await createUser(user_name, password);
+    console.log(res, "UserController");
+    // 3. 返回数据
+    ctx.body = {
+      code: 0,
+      message: "用户注册成功",
+      result: {
+        id: res.id,
+        user_name: res.user_name,
+      },
+    };
+  }
+}
+
+module.exports = new UserController();
+```
+
+# 十. 错误处理 
+
+在控制器中，对不同的错误进行处理，返回不同的提示错误信息 提高代码质量
+
+```js
+const { createUser, getUserInfo } = require("../service/user.service");
+
+class UserController {
+  // controller 叫注册 在service 里面叫做create
+  async register(ctx, next) {
+    // 1. 获取数据
+    // console.log(ctx.request.body);
+    const { user_name, password } = ctx.request.body;
+
+    // 合法性
+    if (!user_name || !password) {
+      console.log("用户名或密码为空", ctx.request.body);
+      ctx.status = 400;
+      ctx.body = {
+        code: "10001",
+        message: "用户名或者密码为空",
+        result: "",
+      };
+      return;
+    }
+
+    // 合理性
+    if (getUserInfo({ user_name })) {
+      // 409 冲突
+      ctx.status = 409;
+      ctx.body = {
+        code: "10002",
+        message: "用户已经存在",
+        result: "",
+      };
+      return;
+    }
+
+    // 2. 操作数据库
+    const res = await createUser(user_name, password);
+    console.log(res, "UserController");
+    // 3. 返回数据
+    ctx.body = {
+      code: 0,
+      message: "用户注册成功",
+      result: {
+        id: res.id,
+        user_name: res.user_name,
+      },
+    };
+  }
+}
+
+module.exports = new UserController();
+```
+
+# 十一. 拆分中间件
