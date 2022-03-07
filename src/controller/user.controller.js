@@ -1,10 +1,19 @@
 const jwt = require("jsonwebtoken");
 
-const { createUser, getUserInfo } = require("../service/user.service");
+const {
+  createUser,
+  getUserInfo,
+  updateById,
+} = require("../service/user.service");
 
-const { userRegisterError } = require("../constant/err.type");
+const {
+  userRegisterError,
+  userLoginError,
+  userUpdateError,
+} = require("../constant/err.type");
 
 const { JWT_SECRET } = require("../config/config.default");
+const app = require("../app");
 
 class UserController {
   // controller 叫注册 在service 里面叫做create
@@ -44,16 +53,38 @@ class UserController {
         },
       };
     } catch (err) {
-      console.log("用户登录失败：", err);
+      console.error("用户登录失败：", err);
+      return ctx.app.emit("error", userLoginError, ctx);
     }
   }
 
   async changePassword(ctx, next) {
+    console.log("changePassword chufale");
     // 1. 获取数据
     const id = ctx.state.user.id;
-    const password = ctx.require.body.password;
+    console.log("id:" + id);
+    const password = ctx.request.body.password;
+    console.log("password:" + password);
     console.log(id, password);
     // 2. 操作数据库
+    try {
+      if (await updateById({ id, password })) {
+        ctx.body = {
+          code: 0,
+          message: "修改密码成功",
+          result: "",
+        };
+      } else {
+        console.error("修改密码失败");
+        ctx.app.emit("error", userUpdateError, ctx);
+        return;
+      }
+      // todo
+    } catch (err) {
+      console.error("修改密码失败:" + err);
+      ctx.app.emit("error", userUpdateError, ctx);
+      return;
+    }
     // 3. 返回结果
     await next();
   }

@@ -29,6 +29,11 @@ module.exports = {
     message: "密码不匹配",
     result: "",
   },
+  userUpdateError: {
+    code: "10007",
+    message: "用户更新失败",
+    result: "",
+  },
   // 授权模块
   tokenExpiredError: {
     code: "10101",
