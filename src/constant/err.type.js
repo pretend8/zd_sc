@@ -29,4 +29,15 @@ module.exports = {
     message: "密码不匹配",
     result: "",
   },
+  // 授权模块
+  tokenExpiredError: {
+    code: "10101",
+    message: "token已过期",
+    result: "",
+  },
+  invalidToken: {
+    code: "10101",
+    message: "无效的token",
+    result: "",
+  },
 };

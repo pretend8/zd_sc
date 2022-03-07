@@ -47,6 +47,16 @@ class UserController {
       console.log("用户登录失败：", err);
     }
   }
+
+  async changePassword(ctx, next) {
+    // 1. 获取数据
+    const id = ctx.state.user.id;
+    const password = ctx.require.body.password;
+    console.log(id, password);
+    // 2. 操作数据库
+    // 3. 返回结果
+    await next();
+  }
 }
 
 module.exports = new UserController();
