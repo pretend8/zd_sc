@@ -24,6 +24,10 @@ const auth = async (ctx, next) => {
   await next();
 };
 
+// 管理员权限校验中间件
+const hasAdminPermission = async (ctx, next) => {};
+
 module.exports = {
   auth,
+  hasAdminPermission,
 };
