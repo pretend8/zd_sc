@@ -5,7 +5,7 @@ const { JWT_SECRET } = require("../config/config.default");
 const { tokenExpiredError, invalidToken } = require("../constant/err.type");
 
 const auth = async (ctx, next) => {
-  const { authorization } = ctx.request.header;
+  const { authorization = "" } = ctx.request.header;
   const token = authorization.replace("Bearer ", "");
   console.log("token:" + token);
   try {
@@ -25,7 +25,9 @@ const auth = async (ctx, next) => {
 };
 
 // 管理员权限校验中间件
-const hasAdminPermission = async (ctx, next) => {};
+const hasAdminPermission = async (ctx, next) => {
+  await next();
+};
 
 module.exports = {
   auth,

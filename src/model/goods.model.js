@@ -14,6 +14,12 @@ const Goods = seq.define(
       allowNull: false,
       comment: "商品价格",
     },
+    goods_num: {
+      type: DataTypes.INTEGER,
+      allowNull: null,
+      defaultValue: 1,
+      comment: "商品数量",
+    },
     good_img: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,11 +27,10 @@ const Goods = seq.define(
     },
   },
   {
-    timestamps: true,
-    deletedAt: true,
+    paranoid: true, // 增加软删除标志
   }
 );
 
-Goods.sync({ force: true });
+// Goods.sync({ force: true });
 
 module.exports = Goods;

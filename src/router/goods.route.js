@@ -4,6 +4,7 @@ const router = new Router({ prefix: "/goods" });
 
 const {
   upload,
+  create,
   update,
   findAll,
   remove,
@@ -12,15 +13,17 @@ const {
 } = require("../controller/goods.controller");
 
 const { auth, hasAdminPermission } = require("../middleware/auth.middleware");
-const { validater } = require("../middleware/goods.middleware");
+const { validator } = require("../middleware/goods.middleware");
 
 // 商品查询
 router.get("/", findAll);
 
-// 商品上传
-router.post("/", auth, hasAdminPermission, validater, upload);
+// 商品图片上传
+router.post("/upload", hasAdminPermission, upload);
+// 商品发布
+router.post("/", auth, hasAdminPermission, validator, create);
 
-router.put("/:id", auth, hasAdminPermission, validater, update);
+router.put("/:id", auth, hasAdminPermission, validator, update);
 
 // 商品删除
 router.delete("/:id", auth, hasAdminPermission, remove);

@@ -41,8 +41,15 @@ module.exports = {
     result: "",
   },
   invalidToken: {
-    code: "10101",
+    code: "10102",
     message: "无效的token",
+    result: "",
+  },
+
+  // 商品模块
+  fileTypeError: {
+    code: "10201",
+    message: "图片格式错误",
     result: "",
   },
 };
