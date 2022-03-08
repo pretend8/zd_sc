@@ -11,7 +11,11 @@ const {
   getAllGoods,
 } = require("../service/goods.service");
 
-const { fileTypeError } = require("../constant/err.type");
+const {
+  fileTypeError,
+  publishGoodsError,
+  goodsFormatError,
+} = require("../constant/err.type");
 
 class GoodsController {
   // 商品图片上传
@@ -50,7 +54,22 @@ class GoodsController {
   }
   // 商品发布
   async create(ctx) {
-    await createGoods();
+    try {
+      const res = await createGoods(ctx.request.body);
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: "商品发布成功",
+          result: res,
+        };
+      } else {
+        console.error("商品发布失败");
+        ctx.app.emit("error", publishGoodsError, ctx);
+      }
+    } catch (error) {
+      console.error(error);
+      ctx.app.emit("error", publishGoodsError, ctx);
+    }
   }
 
   // 商品查询

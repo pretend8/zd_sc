@@ -4,7 +4,9 @@ const Koa = require("koa");
 
 const koaBody = require("koa-body");
 
-const serve = require("koa-static");
+const koaParameter = require("koa-parameter");
+
+const koaStatic = require("koa-static");
 
 const errorHandle = require("./error.handle");
 
@@ -25,7 +27,10 @@ app.use(
 ); // 一定要在注册之前
 
 // 静态文件 localhost:8000/filename
-app.use(serve(path.join(__dirname, "../upload")));
+app.use(koaStatic(path.join(__dirname, "../upload")));
+
+// 参数校验中间件
+app.use(koaParameter(app));
 
 app.use(router.routes());
 

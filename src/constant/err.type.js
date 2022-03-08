@@ -52,4 +52,14 @@ module.exports = {
     message: "图片格式错误",
     result: "",
   },
+  goodsFormatError: {
+    code: "10202",
+    message: "商品格式错误",
+    result: "",
+  },
+  publishGoodsError: {
+    code: "10203",
+    message: "发布商品失败",
+    result: "",
+  },
 };

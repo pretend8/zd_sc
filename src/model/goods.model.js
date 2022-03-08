@@ -20,7 +20,7 @@ const Goods = seq.define(
       defaultValue: 1,
       comment: "商品数量",
     },
-    good_img: {
+    goods_img: {
       type: DataTypes.STRING,
       allowNull: false,
       comment: "商品图片",
@@ -31,6 +31,6 @@ const Goods = seq.define(
   }
 );
 
-// Goods.sync({ force: true });
+Goods.sync({ force: true });
 
 module.exports = Goods;
