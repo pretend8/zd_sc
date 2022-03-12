@@ -74,11 +74,43 @@ class GoodsController {
 
   // 商品查询
   async findAll(ctx) {
-    await getAllGoods();
+    console.log(ctx.request.body,'ctx')
+    console.log(ctx.request.params,'http')
+    const { pageNum =1, pageSize=10 } = ctx.request.params;
+    try{
+      const res = await getAllGoods(pageNum,pageSize);
+        ctx.body = {
+          code: 0,
+          message:"商品获取成功",
+          result:res
+        }
+     
+
+      console.log(res)
+    }catch(err){
+      console.error(err)
+      ctx.app.emit('error',getGoodsError,ctx)
+    }
+    
   }
   // 商品更新
   async update(ctx) {
-    await updateGoods();
+    try {
+      const res = await updateGoods(ctx.request.body);
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: "商品发布成功",
+          result: res,
+        };
+      } else {
+        console.error("商品发布失败");
+        ctx.app.emit("error", publishGoodsError, ctx);
+      }
+    } catch (error) {
+      console.error(error);
+      ctx.app.emit("error", publishGoodsError, ctx);
+    }
   }
   // 商品上架
   async up(ctx) {

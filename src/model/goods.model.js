@@ -31,6 +31,6 @@ const Goods = seq.define(
   }
 );
 
-Goods.sync({ force: true });
+// Goods.sync({ force: true });
 
 module.exports = Goods;

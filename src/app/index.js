@@ -8,11 +8,16 @@ const koaParameter = require("koa-parameter");
 
 const koaStatic = require("koa-static");
 
+const koaCors = require("koa-cors");
+
 const errorHandle = require("./error.handle");
 
 const router = require("../router/index.route");
 
 const app = new Koa();
+
+// 设置允许跨域
+// app.use(koaCors())
 
 app.use(
   koaBody({

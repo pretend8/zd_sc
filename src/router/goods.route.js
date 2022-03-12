@@ -23,6 +23,7 @@ router.post("/upload", hasAdminPermission, upload);
 // 商品发布
 router.post("/", auth, hasAdminPermission, validator, create);
 
+// 商品修改
 router.put("/:id", auth, hasAdminPermission, validator, update);
 
 // 商品删除

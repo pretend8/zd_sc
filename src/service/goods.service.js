@@ -5,9 +5,24 @@ class GoodsService {
     const res = await Goods.create(goods);
     return res.dataValues ? res.dataValues : null;
   }
-  async updateGoods() {}
+  async updateGoods() {
+    // try{
+    //   const res = await Goods.update({},{
+    //     where:{
+    //       id
+    //     }
+    //   })
+    // }
+  }
   async removeGoods() {}
-  async getAllGoods() {}
+  async getAllGoods(pageNum, pageSize) {
+    const offset = pageSize*(pageNum - 1)
+    const res = await Goods.findAndCountAll({
+      offset: offset,
+      limit: pageSize * 1,
+    })
+    return res
+  }
   async onGoods() {}
   async offGoods() {}
 }

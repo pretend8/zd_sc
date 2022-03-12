@@ -10,6 +10,9 @@ const {
 const seq = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PWD, {
   host: MYSQL_HOST,
   dialect: "mysql",
+  dialectOptions: {
+    socketPath: '/tmp/mysql.sock' // 指定套接字文件路径 远程连不上可以使用
+  },
   timezone: "+08:00",
 });
 
