@@ -1,4 +1,4 @@
-const User = require("../model/user.model");
+const User = require('../model/user.model');
 
 class UserService {
   // 创建函数
@@ -22,10 +22,11 @@ class UserService {
     is_admin && Object.assign(whereOpt, { is_admin });
 
     const res = await User.findOne({
-      attributes: ["id", "user_name", "password", "is_admin"],
+      attributes: ['id', 'user_name', 'password', 'is_admin'],
       where: whereOpt,
     });
-    return res ? res.dataValues : null;
+    
+return res ? res.dataValues : null;
   }
 
   // updateUserInfo
@@ -39,9 +40,10 @@ class UserService {
     const res = await User.update(finalOpt, {
       where: whereOpt,
     });
-    console.log(res, "res");
+    console.log(res, 'res');
     console.log(res.dataValues);
-    return res && res.length ? res : null;
+    
+return res && res.length ? res : null;
   }
 }
 

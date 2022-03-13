@@ -1,10 +1,10 @@
 module.exports = (error, ctx) => {
   let status = 500;
   switch (error.code) {
-    case "10001":
+    case '10001':
       status = 400;
       break;
-    case "10002":
+    case '10002':
       status = 409;
       break;
     default:

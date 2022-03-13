@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./src/main.js",
+    "dev": "NODE_ENV=development PORT=39100 nodemon ./src/main.js",
+    "tes": "pm2 start ecosystem.config.js --only test-implant --watch",
+    "release": "pm2 start ecosystem.config.js --only release-implant --watch",
+    "prod": "pm2 start ecosystem.config.js --only prod-implant --watch"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +27,13 @@
     "sequelize": "^6.17.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-html": "^6.2.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
   }
 }
